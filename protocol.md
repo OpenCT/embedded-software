@@ -9,17 +9,17 @@ Commands
   - Each communication will be iniated by the PC
   - The first command to be sent is `version`
   
-Command       | Description |Usage | Example 
---------------|-------------|------|--------
-config        |             |      |       
-debug         |             |      |       
-load          |             |      |       
-manual        |             |      |       
-pause         |             |      |       
-resume        |             |      |       
-start         |             |      |       
-status        |             |      |       
-stop          |             |      |       
-test          |             |      |       
-verison       |             |      |       
+Command       | Description            |Usage | Example 
+--------------|------------------------|------|--------
+config        |                        |      |       
+debug         |                        |      |       
+load          |Loads G-Code into memory|      |       
+manual        |                        |      |       
+pause         |Pauses executing the current scan|      |       
+resume        |Resumes paused scan     |      |       
+start         |Begins the scan         |      |       
+status        |                        |      |       
+stop          |Perminently stops a scan|      |       
+test          |                        |      |       
+verison       |                        |      |       
   
