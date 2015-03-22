@@ -5,21 +5,25 @@ This is a description of the protocol in between the PC and the embedded device.
 
 Commands
 ---------
-  - All commands to the device will be pushed through a bi-directional text stream.
-  - Each communication will be iniated by the PC
-  - The first command to be sent is `version`
+  - All commands to the device will be pushed through a bi-directional byte stream.
+  - Commands are sent through `[length] [command] ([arg1] [arg2] ...)`
   
-    Command   |            Description            |              Usage              | Example 
+    Command   |            Description            |            Example              | Command Number 
 --------------|-----------------------------------|---------------------------------|--------
-config        |Configure Permanent settings       |`config setting:value;next:value`| `config duty-cycle:0.75;max-length:5`
-debug         |                                   |                                 |       
-load          |Loads G-Code into memory           |`load line 1;line2`              | `load G28;M03;M05;M02`      
-manual        |Manually activate hardware         |`manual command arguments`       | `manual x 5`   
-pause         |Pauses executing the current scan  |`pause`                          | `pause`
-resume        |Resumes paused scan                |`resume`                         | `resume`   
-start         |Begins the scan                    |`start arguments`                | `start `    
-status        |                                   |                                 |       
-stop          |Perminently stops a scan           |`stop`                           | `stop`` 
-test          |Run automated tests of the hardware|`test`                           | `test``
-version       |Prints the current version         |`version`                        | `version`
-  
+G0            |Rapid Move (same as G1 in practice)| `G0 X1.3 Y4.5`                  | 1
+G1            |Linear Move                        | `G1 X1.3 Y4.5`                  | 2      
+G4            |Dwell                              | `G4 S1` or `G4 M1000`           | 3     
+G20           |Set unit to inches                 | `G20`                           | N/A*
+G21           |Set unit to millimeters            | `G21`                           | N/A*
+G28           |Return to Home                     | `G28` or `G28 X` or `G28 Y`     | 4  
+G90           |Set absolute positioning           | `G90`                           | N/A*
+G91           |Set relative postioning            | `G91`                           | N/A*
+M0            |Uncoditional Stop                  | `M0`                            | 5
+M1            |Sleep                              | `M1`                            | 6
+M3            |X-ray tube On                      | `M3 V50 A3`                     | 7
+M5            |X-ray tube Off                     | `M5`                            | 8
+M100          |Grab data from detector            | `M100`                          | 9
+M102          |Version data                       | `M102`                          | 0
+
+*Run on pc 
+
