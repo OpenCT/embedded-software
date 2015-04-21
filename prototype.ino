@@ -133,7 +133,7 @@ void runCommands(){
       }
     }else if(goalX != x){
       tmp = goalX - x;
-      tmp = (tmp > MAX_X_SPEED)?MAX_X_SPEED:(tmp > -MAX_X_SPEED)?tmp:-MAX_X_SPEED; //clamp tmp to +MAX_Y_SPEED and -MAX_Y_SPEED
+      tmp = (tmp > MAX_X_SPEED)?MAX_X_SPEED:(tmp > -MAX_X_SPEED)?tmp:-MAX_X_SPEED; //clamp tmp to +MAX_X_SPEED and -MAX_X_SPEED
       moveStepper(tmp,X_AXIS);
     }
     if(goalY == -1){
