@@ -8,7 +8,8 @@ import (
 
 type Scanner struct {
 	x, y, units, xStep, yStep float64
-	relative                  bool
+	v, a                      float64
+	relative, tubeOn          bool
 }
 
 var filter map[string]func(string) (byte, byte, bool)
@@ -50,6 +51,24 @@ func setup() {
 		return uint8(tmp / 256), uint8(tmp), true
 	}
 	filter["M"] = filter["S"]
+	filter["V"] = func(str string) (byte, byte, bool) {
+		tmp, error := strconv.ParseFloat(str, 64)
+		context.v = tmp
+		if error != nil {
+			panic("not a number")
+		}
+		tmp *= 100
+		return uint8(tmp / 256), uint8(tmp), true
+	}
+	filter["A"] = func(str string) (byte, byte, bool) {
+		tmp, error := strconv.ParseFloat(str, 64)
+		context.a = tmp
+		if error != nil {
+			panic("not a number")
+		}
+		tmp *= 1000
+		return uint8(tmp / 256), uint8(tmp), true
+	}
 
 	context.xStep = 100
 	context.yStep = 10
@@ -77,6 +96,35 @@ func execute(line string) []byte {
 		setRelative(false)
 	case "G91":
 		setRelative(true)
+	case "M0":
+		tmp := make([]byte, 2)
+		tmp[0] = 1
+		tmp[1] = 5
+		return tmp
+	case "M1":
+		tmp := make([]byte, 2)
+		tmp[0] = 1
+		tmp[1] = 6
+		return tmp
+	case "M3":
+		context.tubeOn = true
+		return compile([]string{"V", "A"}, 7, tokens, filter)
+	case "M5":
+		context.tubeOn = false
+		tmp := make([]byte, 2)
+		tmp[0] = 1
+		tmp[1] = 8
+		return tmp
+	case "M100":
+		tmp := make([]byte, 2)
+		tmp[0] = 1
+		tmp[1] = 9
+		return tmp
+	case "M102":
+		tmp := make([]byte, 2)
+		tmp[0] = 1
+		tmp[1] = 0
+		return tmp
 	default:
 		panic("Invalid command")
 	}
