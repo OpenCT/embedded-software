@@ -14,6 +14,8 @@ int stp = 13;  //connect pin 13 to step
 int dir = 12;  // connect pin 12 to dir
 int a = 0;     //  gen counter
 
+int distance = 2300;
+
 void setup() 
 {                
   pinMode(stp, OUTPUT);
@@ -23,24 +25,24 @@ void setup()
 
 void loop() 
 {
-  if (a <  200)  //sweep 200 step in dir 1
+  if (a < distance)  //sweep 200 step in dir 1
    {
     a++;
     digitalWrite(stp, HIGH);   
-    delay(10);               
+    delay(1);               
     digitalWrite(stp, LOW);  
-    delay(10);              
+    delay(1);              
    }
   else 
    {
     digitalWrite(dir, HIGH);
     a++;
     digitalWrite(stp, HIGH);  
-    delay(10);               
+    delay(1);               
     digitalWrite(stp, LOW);  
-    delay(10);
+    delay(1);
     
-    if (a>400)    //sweep 200 in dir 2
+    if (a>distance*2)    //sweep 200 in dir 2
      {
       a = 0;
       digitalWrite(dir, LOW);
