@@ -13,39 +13,61 @@
 int stp = 13;  //connect pin 13 to step
 int dir = 12;  // connect pin 12 to dir
 int a = 0;     //  gen counter
-
+int goal = 0;
 int distance = 2300;
+String inString = "";
 
 void setup() 
 {                
   pinMode(stp, OUTPUT);
-  pinMode(dir, OUTPUT);       
+  pinMode(dir, OUTPUT);
+  Serial.begin(9600);  
 }
 
 
 void loop() 
 {
-  if (a < distance)  //sweep 200 step in dir 1
-   {
-    a++;
-    digitalWrite(stp, HIGH);   
-    delay(1);               
-    digitalWrite(stp, LOW);  
-    delay(1);              
+   getGoal();
+   while (a != goal){
+     if(a < goal){
+       digitalWrite(dir, LOW);
+       a++;
+     }else{
+       digitalWrite(dir, HIGH);
+       a--;.
+       
+     }
+     step();
    }
-  else 
-   {
-    digitalWrite(dir, HIGH);
-    a++;
+}
+void getGoal(){
+  while (Serial.available() > 0) {
+      int inChar = Serial.read();
+      if (isDigit(inChar)) {
+        // convert the incoming byte to a char
+        // and add it to the string:
+        inString += (char)inChar;
+    }
+    // if you get a newline, print the string,
+    // then the string's value:
+    if (inChar == '\n') {
+      
+      int tmp = inString.toInt();
+      if(tmp >= 0 && tmp < distance){
+        Serial.print("Going to ");
+        goal = tmp;
+        Serial.println(tmp);
+      }else{
+        Serial.println("No, I'm not going there");
+      }
+      // clear the string for new input:
+      inString = "";
+    }
+  }
+}
+void step(){
     digitalWrite(stp, HIGH);  
-    delay(1);               
+    delay(1);      
     digitalWrite(stp, LOW);  
     delay(1);
-    
-    if (a>distance*2)    //sweep 200 in dir 2
-     {
-      a = 0;
-      digitalWrite(dir, LOW);
-     }
-    }
 }
